@@ -2,15 +2,18 @@ const ical2json = require("ical2json");
 
 const calendarUtils = {
   getData: async (username) => {
-    const response = await fetch("http://localhost:3000/api/calendar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/calendar`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+        }),
+      }
+    );
     const data = await response.text();
 
     // From ical to JSON
