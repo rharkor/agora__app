@@ -3,7 +3,7 @@ const ical2json = require("ical2json");
 const calendarUtils = {
   getData: async (username) => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/calendar`,
+      `${process.env.NEXT_PUBLIC_API_URL}/calendar`,
       {
         method: "POST",
         headers: {
