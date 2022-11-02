@@ -20,3 +20,7 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+.hover-cursor:hover {
+  cursor: pointer;
+}

@@ -27,7 +27,9 @@ const Navbar = () => {
       >
         <li>
           <Link href={"/"}>
-            <Image src={logo} alt="logo" width={38} height={38} priority />
+            <div className="hover-cursor">
+              <Image src={logo} alt="logo" width={38} height={38} />
+            </div>
           </Link>
         </li>
         {initialized && token ? (
