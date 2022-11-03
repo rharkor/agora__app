@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="fr">
       <Head>
         <link
           rel="stylesheet"

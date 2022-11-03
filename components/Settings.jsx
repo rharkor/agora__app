@@ -24,7 +24,11 @@ const Settings = () => {
 
   return (
     <section>
-      <Button onClick={handleClick} variant="contained">
+      <Button
+        onClick={handleClick}
+        variant="contained"
+        aria-label="Settings popover button"
+      >
         <SettingsIcon />
       </Button>
       <Popover
@@ -43,15 +47,13 @@ const Settings = () => {
           }}
         >
           <li>
-            <Link
-              href="/account"
-              onClick={() => {
-                setAnchorEl(null);
-              }}
-            >
+            <Link href="/account">
               <Button
                 sx={{
                   gap: ".5rem",
+                }}
+                onClick={() => {
+                  setAnchorEl(null);
                 }}
               >
                 <AccountCircleIcon /> Compte
