@@ -32,6 +32,10 @@ const calendarUtils = {
     const classroomReg = new RegExp(/(?:pas|Pcm|Msi).*/);
     const otherReg = new RegExp(/[a-zA-Z]+/);
 
+    const tdReg = new RegExp(/^\s*td[\s:]+.*/, "i");
+    const tpReg = new RegExp(/^\s*tp[\s:]+.*/, "i");
+    const cmReg = new RegExp(/^\s*cm[\s:]+.*/, "i");
+
     if (allEvents) {
       return allEvents.map((el) => {
         const zone = getZoneId(el);
@@ -45,11 +49,11 @@ const calendarUtils = {
         title = title.replace("[edt]", "");
         const titleBuffer = title.split("\\n");
         title = titleBuffer[0];
-        const type = title.includes("Td")
+        const type = title.match(tdReg)
           ? "td"
-          : title.includes("Cm")
+          : title.match(cmReg)
           ? "cm"
-          : title.includes("Tp")
+          : title.match(tpReg)
           ? "tp"
           : "other";
         let teacher = null;
