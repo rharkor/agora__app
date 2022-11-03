@@ -155,7 +155,12 @@ const Calendar = () => {
             defaultCurrentViewName="Week"
           />
           <DayView startDayHour={8} endDayHour={20} displayName="jour" />
-          <WeekView startDayHour={8} endDayHour={20} displayName="semaine" />
+          <WeekView
+            startDayHour={8}
+            endDayHour={20}
+            displayName="semaine"
+            excludedDays={[0, 6]}
+          />
 
           <Toolbar />
           <DateNavigator />
