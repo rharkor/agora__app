@@ -5,4 +5,5 @@ services:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "10009:3000"
+    restart: unless-stopped
