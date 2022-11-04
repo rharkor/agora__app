@@ -1,0 +1,31 @@
+name: prod workflow
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  run:
+    # The type of runner that the job will run on
+    runs-on:
+      - self-hosted
+      - louis-server
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run the prod docker-compose
+        run: |
+          touch .env.local
+          echo NEXT_PUBLIC_API_URL=https://agora-api.yetixdev.com >> .env.local
+          echo NEXT_PUBLIC_VAPID_PUBLIC_KEY=BGIz7gLeHDXxdt7TkmRCUT-jK9U28FC7DHHBDJoi841yPVdTuKUKf6H7vpWR3UUfWA-YqrmDTijUVDSHA3YuJ0Q >> .env.local
+          docker-compose up --build -d
