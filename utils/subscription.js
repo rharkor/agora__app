@@ -16,16 +16,21 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-function sendSubscription(subscription) {
-  return api.fetch(`notifications/subscribe`, {
-    method: "POST",
-    body: JSON.stringify({
-      subscription,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+async function sendSubscription(subscription) {
+  try {
+    const res = await api.fetch(`notifications/subscribe`, {
+      method: "POST",
+      body: JSON.stringify({
+        subscription,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res;
+  } catch (e) {
+    throw await e.json();
+  }
 }
 
 export function subscribeUser(registration) {
@@ -38,19 +43,19 @@ export function subscribeUser(registration) {
     process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
   );
 
-  registration.pushManager
+  return registration.pushManager
     .getSubscription()
     .then(function (existedSubscription) {
       if (existedSubscription === null) {
         console.log("No subscription detected, make a request.");
-        registration.pushManager
+        return registration.pushManager
           .subscribe({
             applicationServerKey: convertedVapidKey,
             userVisibleOnly: true,
           })
           .then(function (newSubscription) {
             console.log("New subscription added.", newSubscription);
-            sendSubscription(newSubscription);
+            return sendSubscription(newSubscription);
           })
           .catch(function (e) {
             if (Notification.permission !== "granted") {
@@ -66,7 +71,7 @@ export function subscribeUser(registration) {
             }
           });
       } else {
-        sendSubscription(existedSubscription);
+        return sendSubscription(existedSubscription);
       }
     });
 }

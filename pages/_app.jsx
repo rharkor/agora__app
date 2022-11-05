@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
-        <ToastContainer position="bottom-right" />
+        <ToastContainer position="bottom-right" draggable={true} />
       </AuthProvider>
     </ColorModeProvider>
   );

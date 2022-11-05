@@ -1,20 +1,25 @@
+import api from "./api";
+
 const ical2json = require("ical2json");
 
 const calendarUtils = {
   getData: async (username) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/calendar`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-        }),
-      }
-    );
+    const response = await api.defaultFetch("calendar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+      }),
+    });
     const data = await response.text();
+
+    if (data) {
+      if (data === '{"message":"Error. Bad token"}') throw "Error. Bad token";
+      if (data === '{"status":"error","error":"You can\'t access this module"}')
+        throw "You can't access this module";
+    }
 
     // From ical to JSON
     const output = ical2json.convert(data);

@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from "@mui/material/styles";
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
@@ -24,15 +28,19 @@ export const ColorModeProvider = ({ children }) => {
     setMode(storedMode);
   }, []);
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
+  const theme = useMemo(() => {
+    let themeMemo = createTheme({
+      palette: {
+        mode,
+        background: {
+          default: mode === "light" ? "#eeeeee" : "#121212",
         },
-      }),
-    [mode]
-  );
+      },
+    });
+    themeMemo = responsiveFontSizes(themeMemo);
+
+    return themeMemo;
+  }, [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

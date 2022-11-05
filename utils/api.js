@@ -19,6 +19,16 @@ const api = {
       }
     );
   },
+  defaultFetch: async (url, options) => {
+    let data = {
+      ...options,
+      headers: {
+        ...options?.headers,
+        Authorization: api.authToken ? `Bearer ${api.authToken}` : "",
+      },
+    };
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, data);
+  },
 };
 
 export default api;

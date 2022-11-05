@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.12",
+    "@mui/x-data-grid": "^5.17.10",
     "@rharkor/utils": "^0.1.0",
     "ical2json": "^3.1.2",
     "next": "^12.3.2",

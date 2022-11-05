@@ -107,7 +107,7 @@ const Signin = () => {
             label="Addresse email"
             name="email"
             autoComplete="email"
-            type={"text"}
+            type={"email"}
             autoFocus
             value={email}
             onChange={(e) => {
@@ -139,7 +139,7 @@ const Signin = () => {
           <Grid container>
             <Grid item>
               <Link href="/signup">
-                <Typography variant="body2">
+                <Typography variant="body2" component={"a"}>
                   Pas encore de compte? S'inscrire
                 </Typography>
               </Link>

@@ -115,14 +115,18 @@ const tooltipContent = ({ children, appointmentData, ...restProps }) => (
   </AppointmentTooltip.Content>
 );
 
+let alreadyFetch = false;
+
 const Calendar = () => {
   const [calendarData, setCalendarData] = useState();
-  const currentDate = new Date();
-  const [alreadyFetch, setAlreadyFetch] = useState(false);
+  let currentDate = new Date();
+  if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
+    currentDate.setDate(currentDate.getDate() + 2);
+  }
   const [mainResourceName, setMainResourceName] = useState("type");
 
   const router = useRouter();
-  const { token, initialized, univUsername } = useAuth();
+  const { token, initialized, univUsername, signout } = useAuth();
 
   useEffect(() => {
     if (initialized && !token) {
@@ -133,15 +137,24 @@ const Calendar = () => {
   const getCalendarData = async () => {
     try {
       setCalendarData(await calendarUtils.getData(univUsername));
-      setAlreadyFetch(true);
     } catch (e) {
-      console.error(e);
-      toast.error("Une erreur est survenue..");
+      if (e === "Error. Bad token") {
+        toast.warning("Veuillez vous reconnecter");
+        signout();
+        router.push("/signin");
+      } else if (e === "You can't access this module") {
+        toast.warning("Vous n'avez pas accès à ce module");
+        router.push("/");
+      } else {
+        toast.error("Une erreur est survenue..");
+        console.error(e);
+      }
     }
   };
 
   useEffect(() => {
     if (univUsername && !alreadyFetch) {
+      alreadyFetch = true;
       getCalendarData();
     }
   }, [univUsername]);

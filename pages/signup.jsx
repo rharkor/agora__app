@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import api from "../utils/api";
 import Flash from "../components/Flash";
 import { useAuth } from "../contexts/AuthContext";
-import { formLabelClasses } from "@mui/material";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -219,7 +218,7 @@ const Signup = () => {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signin">
-                <Typography variant="body2">
+                <Typography variant="body2" component={"a"}>
                   Vous possedez déjà un compte? Se connecter
                 </Typography>
               </Link>

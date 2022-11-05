@@ -21,6 +21,16 @@ ul {
   padding: 0;
 }
 
-.hover-cursor:hover {
+.hover-cursor:hover,
+a:hover {
   cursor: pointer;
+}
+
+.row-disabled {
+  background-color: initial !important;
+  opacity: 0.5;
+}
+
+.row-disabled > div {
+  outline: none !important;
 }
