@@ -5,9 +5,11 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 
 import logo from "../res/logo.svg";
-import calendar from "../res/calendar.svg";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../utils/api";
+
+import calendar from "../res/calendar.svg";
+import megasql from "../res/megasql.svg";
 
 export default function Home() {
   const router = useRouter();
@@ -34,6 +36,10 @@ export default function Home() {
 
   const goToCalendar = () => {
     router.push("/calendar");
+  };
+
+  const goToMegasql = () => {
+    router.push("/megasql");
   };
 
   return (
@@ -70,6 +76,7 @@ export default function Home() {
           display: "flex",
           flexWrap: "wrap",
           marginTop: "2rem",
+          gap: "2rem",
         }}
       >
         {access.map((acc) => {
@@ -117,7 +124,9 @@ export default function Home() {
                     cursor: "pointer",
                   },
                 }}
+                onClick={goToMegasql}
               >
+                <Image src={megasql} alt="megasql" height={75} width={75} />
                 <Typography component="h2" variant="h4">
                   Megasql
                 </Typography>
