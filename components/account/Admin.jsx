@@ -55,6 +55,7 @@ const Admin = ({ multiAccount, newMultiAccount, setNewMultiAccount }) => {
         type: typeof value,
         editable: key !== "id" && key !== "admin" ? true : false,
         flex: key !== "id" ? 1 : 0.4,
+        minWidth: key !== "id" ? 150 : 50,
       });
     });
     setGridColumns(columns);
