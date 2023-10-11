@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
           <title>Agora</title>
           <meta
             name="description"
-            content="Agora pour vos applications universitaires"
+            content="Agora pour votre emplois du temps"
           />
           <link rel="shortcut icon" href="/logo.ico" />
         </Head>

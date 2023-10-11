@@ -85,7 +85,7 @@ const MyAccount = ({
         }}
       >
         <Typography component="h3" variant="h5">
-          Nom d'utilisateur universitaire
+          Url de l'emploi du temps
         </Typography>
         {univUsername !== newUnivUsername ? (
           <TextField

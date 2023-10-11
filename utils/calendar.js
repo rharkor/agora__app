@@ -25,106 +25,60 @@ const calendarUtils = {
     const output = ical2json.convert(data);
     const allEvents = output.VCALENDAR[0].VEVENT;
 
-    const getZoneId = (el) => {
-      for (let key in el) {
-        if (key.includes("TZID=")) {
-          return key.split("TZID=")[1];
-        }
-      }
-    };
-
-    const teacherReg = new RegExp(/[A-Z]\.[A-Z][a-z]+/);
-    const classroomReg = new RegExp(/(?:pas|Pcm|Msi).*/);
-    const otherReg = new RegExp(/[a-zA-Z]+/);
-
-    const tdReg = new RegExp(/^\s*td[\s:]+.*/, "i");
-    const tpReg = new RegExp(/^\s*tp[\s:]+.*/, "i");
-    const cmReg = new RegExp(/^\s*cm[\s:]+.*/, "i");
-
     if (allEvents) {
       return allEvents.map((el) => {
-        const zone = getZoneId(el);
-        const start = el[`DTSTART;TZID=${zone}`];
-        const end = el[`DTEND;TZID=${zone}`];
-        const stamp = el.DTSTAMP;
-        let title = el.SUMMARY;
-        const description = el.DESCRIPTION;
+        const start = el[`DTSTART`] ?? "";
+        const end = el[`DTEND`] ?? "";
+        const stamp = el.DTSTAMP ?? "";
+        let title = el["SUMMARY;LANGUAGE=fr"] ?? "";
+        const description = el["DESCRIPTION;LANGUAGE=fr"] ?? "";
+        const location = el["LOCATION;LANGUAGE=fr"] ?? "";
 
         // Format title
-        title = title.replace("[edt]", "");
-        const titleBuffer = title.split("\\n");
-        title = titleBuffer[0];
-        const type = title.match(tdReg)
-          ? "td"
-          : title.match(cmReg)
-          ? "cm"
-          : title.match(tpReg)
-          ? "tp"
-          : "other";
-        let teacher = null;
-        let classroom = null;
-        let other = null;
-        if (titleBuffer[1]) {
-          if (titleBuffer[1].match(teacherReg)) {
-            teacher = titleBuffer[1];
-            // console.log(titleBuffer[1], "is a teacher!");
-          } else if (titleBuffer[1].match(classroomReg)) {
-            classroom = titleBuffer[1];
-            // console.log(titleBuffer[1], "is a classroom!");
-          } else if (titleBuffer[1].match(otherReg)) {
-            other = titleBuffer[1];
-            // console.log(titleBuffer[1], "is other");
-          } else {
-            // console.log(titleBuffer[1], "is nothing");
-          }
-        }
-
-        if (titleBuffer[2]) {
-          if (titleBuffer[2].match(teacherReg)) {
-            teacher = titleBuffer[2];
-            // console.log(titleBuffer[2], "is a teacher!");
-          } else if (titleBuffer[2].match(classroomReg)) {
-            classroom = titleBuffer[2];
-            // console.log(titleBuffer[2], "is a classroom!");
-          } else if (titleBuffer[2].match(otherReg)) {
-            other = titleBuffer[2];
-            // console.log(titleBuffer[2], "is other");
-          } else {
-            // console.log(titleBuffer[2], "is nothing");
-          }
-        }
+        const [titleF, teacher, ...otherI] = title.split(" - ");
+        const other = otherI.join(" - ");
 
         return {
           id: el.UID,
-          title,
+          title: titleF,
           description,
-          stamp: new Date(
-            stamp.slice(0, 4),
-            parseInt(stamp.slice(4, 6)) - 1,
-            stamp.slice(6, 8),
-            stamp.slice(9, 11),
-            stamp.slice(11, 13),
-            stamp.slice(13, 15)
-          ),
-          startDate: new Date(
-            start.slice(0, 4),
-            parseInt(start.slice(4, 6)) - 1,
-            start.slice(6, 8),
-            start.slice(9, 11),
-            start.slice(11, 13)
-          ),
-          endDate: new Date(
-            end.slice(0, 4),
-            parseInt(end.slice(4, 6)) - 1,
-            end.slice(6, 8),
-            end.slice(9, 11),
-            end.slice(11, 13)
-          ),
-          zone,
+          stamp:
+            stamp &&
+            new Date(
+              Date.UTC(
+                stamp.slice(0, 4),
+                parseInt(stamp.slice(4, 6)) - 1,
+                stamp.slice(6, 8),
+                stamp.slice(9, 11),
+                stamp.slice(11, 13),
+                stamp.slice(13, 15)
+              )
+            ),
+          startDate:
+            start &&
+            new Date(
+              Date.UTC(
+                start.slice(0, 4),
+                parseInt(start.slice(4, 6)) - 1,
+                start.slice(6, 8),
+                start.slice(9, 11),
+                start.slice(11, 13)
+              )
+            ),
+          endDate:
+            end &&
+            new Date(
+              Date.UTC(
+                end.slice(0, 4),
+                parseInt(end.slice(4, 6)) - 1,
+                end.slice(6, 8),
+                end.slice(9, 11),
+                end.slice(11, 13)
+              )
+            ),
           teacher,
-          location: classroom,
+          location,
           other,
-          type,
         };
       });
     }

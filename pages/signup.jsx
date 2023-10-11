@@ -166,7 +166,7 @@ const Signup = () => {
                 required
                 fullWidth
                 id="username"
-                label="Nom d'utilisateur universitaire"
+                label="Url de l'emploi du temps"
                 name="username"
                 autoComplete="username"
                 type={"text"}
